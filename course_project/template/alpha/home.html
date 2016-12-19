@@ -1,0 +1,53 @@
+{% extends '../base.html' %}
+{% block content %}
+{% load static %}
+{% include '../header.html' %}
+    <div id="chat-body" class="panel panel-default">
+    <span class="companion-id" companion-id="{{ companion_id }}"></span>
+        <div class="panel-heading">Chat Box</div>
+        <div id="msg-list-div" class="panel-body">
+            <ul id="msg-list" class="list-group">
+                {% for obj in chat %}
+                    {% if obj.account.id == request.user.id %}
+                        <li class="text-right list-group-item">
+                        <div class="blog-poast-info">
+	                					<ul>
+	                						<li><a class="admin" href="{% url 'account' obj.account.id %}"><i> </i> {{ obj.account.username }} </a></li>
+	                						<li><span><i class="date"> </i>{{ obj.created }}</span></li>
+                                        </ul>
+                        </div>
+                        {{ obj.message }}
+                        </li>
+                    {% else %}
+                        <li class="text-left list-group-item">
+                        <div class="blog-poast-info">
+						<ul>
+							<li><a class="admin" href="{% url 'account' obj.account.id %}"><i> </i> {{ obj.account.username }} </a></li>
+							<li><span><i class="date"> </i>{{ obj.created }}</span></li>
+                        </ul>
+                        </div>
+                        {{ obj.message }}
+                        </li>
+                    {% endif %}
+                {% empty %}
+                    <li class="text-right list-group-item">No messages yet!</li>
+                {% endfor %}
+                <script>
+                    var chatlist = document.getElementById('msg-list-div');
+                    chatlist.scrollTop = chatlist.scrollHeight;
+                </script>
+            </ul>
+        </div>
+    </div>
+
+    <form id="chat-form" method="post" action="{% url 'post' user.id companion_id %}">
+        {% csrf_token %}
+        <div id="chat-bottom" class="input-group" style="position: relative;">
+            <input type="text" id="chat-msg" name="chat-msg" class="form-control"/>
+            <span class="input-group-btn">
+                <input class="btn btn-default" id="send" type="submit" value="Send"/>
+            </span>
+        </div>
+    </form>
+    <script src="{% static 'js/chat.js' %}"></script>
+{% endblock %}

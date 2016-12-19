@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+<!--header-->
+{% include 'header.html' %}
+<!--content-->
+<div class="blog">
+	<div class="container">
+    {% if user.id == account_id %}
+        <h1>Add post</h1>
+        <div class="row">
+            <div class="col-md-12 account-top">
+
+                <form action="{% url 'posting' user.id %}" method="post">
+                    {% csrf_token %}
+                    <div>
+                        <h3>Header</h3>
+                           {{ post_form.post_name }}
+                    </div>
+                    <div>
+                        <h3>Text</h3>
+                           {{ post_form.post_text}}
+                    </div>
+                    <div align="center">
+                        <input type="submit" value="Post">
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    {% else %}
+        <div class="col-md-12">
+            <h3 align="center">{{ account_name }}'s page</h3>
+                {% if is_friend %}
+                    <div align="center"><a href="{% url 'remove_friend' account_id %}">Remove from friends list</a></div>
+                {% else %}
+                    <div align="center"><a href="{% url 'add_friend' account_id %}">Add to friends list</a></div>
+                {% endif %}
+        </div>
+    {% endif %}
+
+	<h1>Posts</h1>
+    {% load filters %}
+	{% for post in object_list %}
+			  <div class="col-md-6 grid_3">
+					<h3><a href="{% url 'detail' account_id=post.account_id post_id=post.id %}">{{ post.post_name }}</a></h3>
+					<!--<a href="blog_single.html"><img src="/media/images/b1.jpg" class="img-responsive" alt=""/></a>-->
+
+					<div class="blog-poast-info">
+						<ul>
+							<li><a class="admin" href="{% url 'account' post.account_id %}"><i> </i> {{ post.account_id|get_author }} </a></li>
+							<li><span><i class="date"> </i>{{ post.pub_date }}</span></li>
+							<li><a class="p-blog" href="{% url 'detail' account_id=post.account_id post_id=post.id %}"><i class="comment"> </i>{{ post.comment_set.count }}
+								{% if post.comment_set.count == 1 %}
+								    comment
+                                {% else %}
+                                    comments
+                                {% endif %}
+							</a></li>
+						</ul>
+				    </div>
+					<div class="">{{ post|cut_news }}</div>
+				    <div class="heart-particle-box">
+					   <button style="float: left;margin-right: 10px;" class="likes post-likes btn-primary" id="heart-icon" data-post-id="{{ post.id }}">
+					   Like
+                       {% if liked %}
+					   <i class="heart-shaped fa fa-heart" style="display: line-block"></i>
+					   <i class="heart-shaped fa fa-heart-o" style="display: none"></i>
+					   {% else %}
+					   <i class="heart-shaped fa fa-heart" style="display: none"></i>
+					   <i class="heart-shaped fa fa-heart-o" style="display: line-block"></i>
+					   {% endif %}
+					   </button>
+					   <div style="" class="like_count_blog_{{ post.id }}" id="heart-counter_{{ post.id }}">{{ post.likecollector_set.count }}</div>
+					</div>
+					<div class="button"><a href="{% url 'detail' account_id=post.account_id post_id=post.id %}">Read More</a></div>
+			  </div>
+		{% endfor %}
+	</div>
+
+    {{ block.super }}
+
+</div>
+{% endblock %}
+			

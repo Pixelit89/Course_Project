@@ -1,0 +1,17 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+{% include '../header.html' %}
+{% for chat in chats %}
+    <a href="{% url 'messages' account_id=user.id companion_id=chat %}">
+        <div class="friend-window">
+            {% for friend in friends %}
+                {% if friend.id == chat %}
+                    <img  width="70" class="img-circle" src="/media/{{ friend.avatar }}" />
+                    {{ friend.username }}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </a>
+{% endfor %}
+{% endblock %}

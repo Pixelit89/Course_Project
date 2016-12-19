@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'header.html' %}
+    <p>You searched for: <strong>{{ query }}</strong></p>
+
+    {% if names %}
+        <p>Found {{ names|length }} name{{ names|pluralize }}.</p>
+        <ul>
+            {% for name in names %}
+                <li><a href="{% url 'account' name.id %}"><img class="img-circle" width="50" src="/media/{{ name.avatar }}" />{{ name.first_name }} {{ name.last_name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No names matched your search criteria.</p>
+{% endif %}
+{% endblock %}

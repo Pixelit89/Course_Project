@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<!--header-->
+{% include 'header.html' %}
+<!--content-->
+    {% load filters %}
+<div class="blog">
+<div class="container">
+	       <div class="blog-top">
+			  <div class=" grid_3 grid-1">
+					<h3><a href="blog_single.html">{{ post.post_name }}</a></h3>
+					<a href="blog_single.html"><img src="images/blo.jpg" class="img-responsive" alt=""/></a>
+					
+					<div class="blog-poast-info">
+						<ul>
+							<li><a class="admin" href="{% url 'account' post.account_id %}"><i> </i>{{ post.account_id|get_author }}</a></li>
+							<li><span><i class="date"> </i>{{ post.pub_date }}</span></li>
+							<li><a class="p-blog" href="#begin"><i class="comment"> </i>{{ object_list.count }}
+                                {% if comments.count == 1 %}
+                                    comment
+                                {% else %}
+                                    comments
+                                {% endif %}
+                            </a></li>
+						</ul>
+				    </div>
+				  	<p>{{ post.post }}</p>
+					</div>
+				<div class="single-bottom">
+		
+			<h3>Leave A Comment</h3>
+				<form action="{% url 'comment' account_id=post.account_id post_id=post.id %}" method="post">
+					{% csrf_token %}
+                    <input type="hidden" value="{{ user.id }}" name="user_id" />
+					{{ comment_form.comment_text }}
+					<input type="submit" value="Send">
+				</form>
+			</div>
+			   <h3>Comments</h3>
+                <a name="begin"></a>
+               {% for comment in object_list %}
+               <div class="blog-poast-info grid_3">
+
+						<ul>
+
+							<li><a class="admin" href="#"><i> </i>{{ comment.author }}</a></li>
+							<li><span><i class="date"> </i>{{ comment.pub_date }}</span></li>
+							<!--<li><a class="p-blog" href="#"><i class="comment"> </i>There is {{ comments }} comments.</a></li>-->
+
+                        </ul>
+
+                <p class="col-md-12">{{ comment.comment_text }}</p>
+                </div>
+               {% endfor %}
+			   <!--<div class="single-bottom">-->
+                   <!--{% for comment in comments %}-->
+                        <!--<div class="col-md-3">{{ comment.author }}</div><div class="col-md-3">Publication date: {{ comment.pub_date }}</div>-->
+                        <!--<div class="col-md-12">{{ comment.comment_text }}</div>-->
+                   <!--{% endfor %}-->
+			   <!--</div>-->
+			  </div>
+      </div>
+</div>
+    {{ block.super }}
+{% endblock %}
+			

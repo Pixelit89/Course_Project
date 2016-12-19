@@ -1,0 +1,25 @@
+{% for obj in chat %}
+    {% if obj.account.id == request.user.id %}
+        <li class="text-right list-group-item">
+        <div class="blog-poast-info">
+						<ul>
+							<li><a class="admin" href="{% url 'account' obj.account.id %}"><i> </i> {{ obj.account.username }} </a></li>
+							<li><span><i class="date"> </i>{{ obj.created }}</span></li>
+                        </ul>
+        </div>
+        {{ obj.message }}
+        </li>
+    {% else %}
+        <li class="text-left list-group-item">
+        <div class="blog-poast-info">
+						<ul>
+							<li><a class="admin" href="{% url 'account' obj.account.id %}"><i> </i> {{ obj.account.username }} </a></li>
+							<li><span><i class="date"> </i>{{ obj.created }}</span></li>
+                        </ul>
+        </div>
+        {{ obj.message }}
+        </li>
+    {% endif %}
+{% empty %}
+    <li class="text-right list-group-item">No messages yet!</li>
+{% endfor %}

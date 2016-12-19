@@ -1,0 +1,67 @@
+<div class="header">
+	<div class="header-top">
+		<div class="container">
+			<div class="pull-left">
+                <div class="col-md-8">
+                    <img class="img-circle" height="100" style="float: left" src="/media/{{ avatar }}">
+                    <div class="col-md-7">
+                    <h2 style="float: left; color: white; margin-top: 25%;"><span class="username" data-user-id="{{ user.id }}">
+                        <a style="color: inherit; text-decoration: none" href="{% url 'account' user.id %}">
+                            {{ user.username }}
+                        </a></span>
+                    </h2>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <a style="text-decoration: none; color: inherit" href="{% url 'edit_profile' user.id %}">
+                        <div class="col-md-6 btn btn-warning">Edit profile
+                        </div>
+                    </a>
+                    <a style="text-decoration: none; color: inherit" href="{% url 'conversations' user.id %}">
+                        <div class="col-md-6 btn btn-primary">Messages
+                        </div>
+                    </a>
+                    <a style="text-decoration: none; color: inherit" href="{% url 'messages' user.id account_id %}">
+                        <div class="col-md-12 btn btn-success">Write a message
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="search">
+					<form action="{% url 'search' %}">
+						<input name ="q" type="text" value="Search " onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
+						<input type="submit" value="Go">
+					</form>
+			</div>
+			<div class="header-left register-bottom-grid">
+					<ul>
+                        <li >
+                        <form action="{% url 'logout' %}">
+						<input value="Log out" type="submit" />
+                        </form>
+                        </li>
+					</ul>
+					<div class="clearfix"> </div>
+			</div>
+
+				<div class="clearfix"> </div>
+		</div>
+		</div>
+		<div class="container">
+
+			<div class="head-top">
+                <div align="center">Friends list</div>
+                <div class="carousel">
+                {% for friend in friends %}
+                    <a href="{% url 'account' friend.id %}"><div class="friend-window pull-left">
+                        <img  width="70" class="img-circle" src="/media/{{ friend.avatar }}" />
+                        <p>{{ friend.username }}</p>
+                    </div></a>
+                {% endfor %}
+
+                </div>
+				<div class="clearfix"> </div>
+		</div>
+		</div>
+
+	</div>
