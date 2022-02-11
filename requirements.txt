@@ -48,7 +48,7 @@ requests==2.9.1
 sessioninstaller==0.0.0
 six==1.10.0
 system-service==0.3
-Twisted==16.6.0
+Twisted==22.1.0
 txaio==2.5.2
 ubuntu-drivers-common==0.0.0
 ufw==0.35
